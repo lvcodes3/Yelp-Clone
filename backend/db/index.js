@@ -1,11 +1,15 @@
+/////////////////////////////////////////
+// ESTABLISHING CONNECTION TO PGSQL DB //
+/////////////////////////////////////////
 const { Pool } = require('pg');
+require('dotenv').config();
 
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'yelp_clone',
-    password: 'pass',
-    port: 5432
+    user: process.env.USER,
+    host: process.env.HOST,
+    database: process.env.DATABASE,
+    password: process.env.PASSWORD,
+    port: process.env.DBPORT
 });
 
 module.exports = {
