@@ -1,31 +1,24 @@
+// create express web server for backend
 const express = require('express');
 const app = express();
 
+// PGSQL connection import
+const db = require('./db'); 
+
+// require env variables
 require('dotenv').config();
 
+// set the backend port number
 const port = process.env.PORT || 5001;
 
+// middlewares
+const cors = require('cors');     // allow communication between frontend and backend
 const morgan = require('morgan'); // HTTP request logger middleware for node.js
-//app.use(morgan("tiny"));
-// example output: GET /api/v1/restaurants 304 - - 1.539 ms
 
-// express middleware that gives us access to JSON data in req.body
-app.use(express.json()); 
-
-
-// pg import
-const db = require('./db');
-
-
-// example of express middleware (define at top so it can get the request)
-/*
-app.use((req, res, next) => {
-    console.log("This is a middleware.");
-    // proceed to the route if configured
-    next();
-});
-*/
-
+// use middlewares
+app.use(express.json()); // express middleware that gives us access to JSON data in req.body
+app.use(cors());
+app.use(morgan("tiny"));
 
 // express routes //
 
@@ -124,7 +117,16 @@ app.delete("/api/v1/restaurants/:id", async (req, res) => {
     }
 });
 
-
+// express web server listens for requests
 app.listen(port, () => {
     console.log(`Server listening on PORT ${port}`);
 });
+
+/*
+// example of express middleware (define at top so it can get the request before proceeding to direct route)
+app.use((req, res, next) => {
+    console.log("This is a middleware.");
+    // proceed to the route if configured
+    next();
+});
+*/
