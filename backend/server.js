@@ -34,7 +34,13 @@ app.get("/api/v1/restaurants", async (req, res) => {
     console.log("Attempting to retrieve all restaurants");
     try {
         const restaurants = await db.query("SELECT * FROM restaurants");
-        res.status(200).json(restaurants.rows);
+        res.status(200).json({
+            status: "success",
+            results: restaurants.rows.length,
+            data: {
+                restaurants: restaurants.rows
+            }
+        });
     } 
     catch (err) {
         console.log(err.message);
@@ -46,11 +52,13 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
     console.log(`Attempting to retrieve restaurant with id: ${req.params.id}`);
     try {
         const id = req.params.id;
-        const restaurant = await db.query(
-            "SELECT * FROM restaurants WHERE id = $1",
-            [id]
-        );
-        res.status(200).json(restaurant.rows[0]);
+        const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [id]);
+        res.status(200).json({
+            status: "success",
+            data: {
+                restaurant: restaurant.rows[0]
+            }
+        });
     } 
     catch (err) {
         console.log(err.message);
@@ -58,18 +66,62 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
 });
 
 // 3. add a restaurant
-app.post("/api/v1/restaurants", (req, res) => {
+app.post("/api/v1/restaurants", async (req, res) => {
     console.log(`Attempting to insert restaurant with JSON data: ${JSON.stringify(req.body)}`);
+    try {
+        const { name, location, price_range } = req.body;
+        const restaurant = await db.query(
+            "INSERT INTO restaurants(name, location, price_range) VALUES($1, $2, $3) RETURNING *",
+            [name, location, price_range]
+        );
+        res.status(201).json({
+            status: "success",
+            data: {
+                restaurant: restaurant.rows[0]
+            }
+        });
+    } 
+    catch (err) {
+        console.log(err.message);
+    }
 });
 
 // 4. update a restaurant
-app.put("/api/v1/restaurants/:id", (req, res) => {
+app.put("/api/v1/restaurants/:id", async (req, res) => {
     console.log(`Attempting to update restaurant of id: ${req.params.id} with JSON data: ${JSON.stringify(req.body)}`);
+    try {
+        const id = req.params.id;
+        const { name, location, price_range } = req.body;
+        const restaurant = await db.query(
+            "UPDATE restaurants SET name = $1, location = $2, price_range = $3 WHERE id = $4 RETURNING *",
+            [name, location, price_range, id]
+        );
+        res.status(200).json({
+            status: "success",
+            data: {
+                restaurant: restaurant.rows[0]
+            }
+        });
+    } 
+    catch (err) {
+        console.log(err.message);
+    }
 });
 
 // 5. delete a restaurant
-app.delete("/api/v1/restaurants/:id", (req, res) => {
+app.delete("/api/v1/restaurants/:id", async (req, res) => {
     console.log(`Attempting to delete restaurant with id: ${req.params.id}`);
+    try {
+        const id = req.params.id;
+        const response = await db.query(
+            "DELETE FROM restaurants WHERE id = $1",
+            [id]
+        );
+        res.status(204).send();
+    } 
+    catch (err) {
+        console.log(err.message);
+    }
 });
 
 
