@@ -1,7 +1,4 @@
-
 const UpdateRestaurant = () => {
-  return (
-    <div>UpdateRestaurant</div>
-  );
-}
+  return <div>UpdateRestaurant</div>;
+};
 export default UpdateRestaurant;

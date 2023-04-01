@@ -1,132 +1,27 @@
 // create express web server for backend
-const express = require('express');
+const express = require("express");
 const app = express();
 
-// PGSQL connection import
-const db = require('./db'); 
-
 // require env variables
-require('dotenv').config();
+require("dotenv").config();
 
 // set the backend port number
 const port = process.env.PORT || 5001;
 
-// middlewares
-const cors = require('cors');     // allow communication between frontend and backend
-const morgan = require('morgan'); // HTTP request logger middleware for node.js
+// middlewares //
+const cors = require("cors"); // allow communication between frontend and backend
+const morgan = require("morgan"); // HTTP request logger middleware for node.js
 
-// use middlewares
+// use middlewares //
 app.use(express.json()); // express middleware that gives us access to JSON data in req.body
 app.use(cors());
 app.use(morgan("tiny"));
 
-// express routes //
+// main express route //
+const restaurantRoutes = require("./src/restaurant/routes");
+app.use("/api/v1/restaurants", restaurantRoutes);
 
-// 1. get all restaurants
-app.get("/api/v1/restaurants", async (req, res) => {
-    console.log("Attempting to retrieve all restaurants");
-    try {
-        const restaurants = await db.query("SELECT * FROM restaurants");
-        res.status(200).json({
-            status: "success",
-            results: restaurants.rows.length,
-            data: {
-                restaurants: restaurants.rows
-            }
-        });
-    } 
-    catch (err) {
-        console.log(err.message);
-    }
-});
-
-// 2. get a restaurant
-app.get("/api/v1/restaurants/:id", async (req, res) => {
-    console.log(`Attempting to retrieve restaurant with id: ${req.params.id}`);
-    try {
-        const id = req.params.id;
-        const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [id]);
-        res.status(200).json({
-            status: "success",
-            data: {
-                restaurant: restaurant.rows[0]
-            }
-        });
-    } 
-    catch (err) {
-        console.log(err.message);
-    }
-});
-
-// 3. add a restaurant
-app.post("/api/v1/restaurants", async (req, res) => {
-    console.log(`Attempting to insert restaurant with JSON data: ${JSON.stringify(req.body)}`);
-    try {
-        const { name, location, price_range } = req.body;
-        const restaurant = await db.query(
-            "INSERT INTO restaurants(name, location, price_range) VALUES($1, $2, $3) RETURNING *",
-            [name, location, price_range]
-        );
-        res.status(201).json({
-            status: "success",
-            data: {
-                restaurant: restaurant.rows[0]
-            }
-        });
-    } 
-    catch (err) {
-        console.log(err.message);
-    }
-});
-
-// 4. update a restaurant
-app.put("/api/v1/restaurants/:id", async (req, res) => {
-    console.log(`Attempting to update restaurant of id: ${req.params.id} with JSON data: ${JSON.stringify(req.body)}`);
-    try {
-        const id = req.params.id;
-        const { name, location, price_range } = req.body;
-        const restaurant = await db.query(
-            "UPDATE restaurants SET name = $1, location = $2, price_range = $3 WHERE id = $4 RETURNING *",
-            [name, location, price_range, id]
-        );
-        res.status(200).json({
-            status: "success",
-            data: {
-                restaurant: restaurant.rows[0]
-            }
-        });
-    } 
-    catch (err) {
-        console.log(err.message);
-    }
-});
-
-// 5. delete a restaurant
-app.delete("/api/v1/restaurants/:id", async (req, res) => {
-    console.log(`Attempting to delete restaurant with id: ${req.params.id}`);
-    try {
-        const id = req.params.id;
-        const response = await db.query(
-            "DELETE FROM restaurants WHERE id = $1",
-            [id]
-        );
-        res.status(204).send();
-    } 
-    catch (err) {
-        console.log(err.message);
-    }
-});
-
-// express web server listens for requests
+// express web server listens for requests //
 app.listen(port, () => {
-    console.log(`Server listening on PORT ${port}`);
+  console.log(`Server listening on PORT ${port}`);
 });
-
-/*
-// example of express middleware (define at top so it can get the request before proceeding to direct route)
-app.use((req, res, next) => {
-    console.log("This is a middleware.");
-    // proceed to the route if configured
-    next();
-});
-*/
