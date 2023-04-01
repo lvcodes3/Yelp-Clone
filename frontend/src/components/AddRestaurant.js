@@ -25,7 +25,7 @@ const AddRestaurant = () => {
   };
 
   return (
-    <div className="mb-4">
+    <div className="my-5">
       <form action="">
         <div className="form-row">
           <div className="col">
@@ -48,7 +48,7 @@ const AddRestaurant = () => {
           </div>
           <div className="col">
             <select
-              className="custom-select my-1 mr-sm-2"
+              className="custom-select mr-sm-2"
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
             >
@@ -61,7 +61,7 @@ const AddRestaurant = () => {
             </select>
           </div>
           <button
-            className="btn btn-primary"
+            className="btn btn-success"
             type="submit"
             onClick={handleFormSubmit}
           >

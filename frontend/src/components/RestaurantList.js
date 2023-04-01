@@ -1,10 +1,14 @@
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 
 const RestaurantList = (props) => {
   // using our created context to store data
   const { restaurants, setRestaurants } = useContext(RestaurantsContext);
+
+  // useNavigate allows us to navigate programmatically between pages or routes in our React app
+  let navigate = useNavigate();
 
   // will only run when the component mounts
   useEffect(() => {
@@ -18,6 +22,11 @@ const RestaurantList = (props) => {
       console.log(err.message);
     }
   }, []);
+
+  const handleUpdate = async (id) => {
+    // navigating to a new location in the app
+    navigate(`/restaurants/${id}/update`);
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -35,9 +44,9 @@ const RestaurantList = (props) => {
 
   return (
     <div className="list-group">
-      <table className="table table-hover table-dark">
-        <thead>
-          <tr className="bg-primary">
+      <table className="table table-hover text-center">
+        <thead className="thead-dark">
+          <tr>
             <th scope="col">Restaurant</th>
             <th scope="col">Location</th>
             <th scope="col">Price Range</th>
@@ -47,7 +56,7 @@ const RestaurantList = (props) => {
           </tr>
         </thead>
         <tbody>
-          {/* if restaurants exists we will run the rest of the map code */}
+          {/* if restaurants exists we will dynamically create table rows */}
           {restaurants &&
             restaurants.map((restaurant) => {
               return (
@@ -57,7 +66,12 @@ const RestaurantList = (props) => {
                   <td>{"$".repeat(restaurant.price_range)}</td>
                   <td>Rating</td>
                   <td>
-                    <button className="btn btn-warning">Update</button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => handleUpdate(restaurant.id)}
+                    >
+                      Update
+                    </button>
                   </td>
                   <td>
                     <button

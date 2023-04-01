@@ -3,7 +3,7 @@ import { RestaurantsContextProvider } from "./context/RestaurantsContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // route pages
 import Home from "./routes/Home";
-import UpdateRestaurant from "./routes/UpdateRestaurant";
+import UpdateRestaurant from "./routes/UpdatePage";
 import RestaurantDetails from "./routes/RestaurantDetails";
 
 const App = () => {
