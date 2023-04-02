@@ -48,7 +48,7 @@ const AddRestaurant = () => {
           </div>
           <div className="col">
             <select
-              className="custom-select mr-sm-2"
+              className="custom-select"
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
             >
