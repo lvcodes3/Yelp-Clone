@@ -21,16 +21,28 @@ const RestaurantList = (props) => {
     } catch (err) {
       console.log(err.message);
     }
-  }, []);
+  }, [setRestaurants]);
 
-  const handleUpdate = async (id) => {
+  const handleRestaurantClick = (id) => {
+    // navigating to a new location in the app
+    navigate(`/restaurants/${id}`);
+  };
+
+  const handleUpdate = async (e, id) => {
+    // stopping update button click to propogate to tr click
+    e.stopPropagation();
+
     // navigating to a new location in the app
     navigate(`/restaurants/${id}/update`);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
+    // stopping delete button click to propogate to tr click
+    e.stopPropagation();
+
     try {
       const response = await RestaurantFinder.delete(`/${id}`);
+
       // filtering out the deleted restaurant from the restaurant list
       setRestaurants(
         restaurants.filter((restaurant) => {
@@ -60,7 +72,10 @@ const RestaurantList = (props) => {
           {restaurants &&
             restaurants.map((restaurant) => {
               return (
-                <tr key={restaurant.id}>
+                <tr
+                  key={restaurant.id}
+                  onClick={() => handleRestaurantClick(restaurant.id)}
+                >
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
                   <td>{"$".repeat(restaurant.price_range)}</td>
@@ -68,7 +83,7 @@ const RestaurantList = (props) => {
                   <td>
                     <button
                       className="btn btn-primary"
-                      onClick={() => handleUpdate(restaurant.id)}
+                      onClick={(e) => handleUpdate(e, restaurant.id)}
                     >
                       Update
                     </button>
@@ -76,7 +91,7 @@ const RestaurantList = (props) => {
                   <td>
                     <button
                       className="btn btn-danger"
-                      onClick={() => handleDelete(restaurant.id)}
+                      onClick={(e) => handleDelete(e, restaurant.id)}
                     >
                       Delete
                     </button>

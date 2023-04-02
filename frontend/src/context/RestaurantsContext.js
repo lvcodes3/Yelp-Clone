@@ -5,6 +5,7 @@ export const RestaurantsContext = createContext();
 
 export const RestaurantsContextProvider = (props) => {
   const [restaurants, setRestaurants] = useState([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
   const addRestaurant = (restaurant) => {
     // take all the current restaurants and append the new restaurant to the end
@@ -17,6 +18,8 @@ export const RestaurantsContextProvider = (props) => {
         restaurants: restaurants,
         setRestaurants: setRestaurants,
         addRestaurant: addRestaurant,
+        selectedRestaurant: selectedRestaurant,
+        setSelectedRestaurant: setSelectedRestaurant,
       }}
     >
       {props.children}
@@ -31,5 +34,5 @@ export const RestaurantsContextProvider = (props) => {
 // 4. The RestaurantsContext.Provider component is returned with a value prop, which is set to an object that
 //    contains the restaurants state variable and the setRestaurants function. The props.children is used to
 //    render any components that are passed as chiildren to the RestaurantsContextProvider.
-// Any component wrapped with RestaurantsContextProvider will have access to the RestaurantsContext, which
-// contains the restaurants state, setRestaurants function, and addRestaurant function
+// Any component wrapped with RestaurantsContextProvider will have access to the RestaurantsContext,
+// which contains the values being passed in
