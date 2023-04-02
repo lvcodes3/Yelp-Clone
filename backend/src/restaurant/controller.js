@@ -26,11 +26,16 @@ const getRestaurant = async (req, res) => {
   console.log(`Attempting to retrieve restaurant with id: ${req.params.id}`);
   try {
     const id = req.params.id;
+    // get restaurant by id
     const restaurant = await db.query(queries.getRestaurant, [id]);
+    // get reviews for the restaurant
+    const reviews = await db.query(queries.getReviews, [id]);
+    // send back data
     res.status(200).json({
       status: "success",
       data: {
         restaurant: restaurant.rows[0],
+        reviews: reviews.rows,
       },
     });
   } catch (err) {

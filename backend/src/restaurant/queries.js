@@ -14,10 +14,13 @@ const updateRestaurant =
 
 const deleteRestaurant = "DELETE FROM restaurants WHERE id = $1";
 
+const getReviews = "SELECT * FROM reviews WHERE restaurant_id = $1";
+
 module.exports = {
   getAllRestaurants,
   getRestaurant,
   addRestaurant,
   updateRestaurant,
   deleteRestaurant,
+  getReviews,
 };
