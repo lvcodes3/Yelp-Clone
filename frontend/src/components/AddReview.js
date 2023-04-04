@@ -1,14 +1,24 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import RestaurantFinder from "../apis/RestaurantFinder";
 
 const AddReview = () => {
   const [name, setName] = useState("");
   const [rating, setRating] = useState("Select a Rating");
   const [review, setReview] = useState("");
+  const { id } = useParams();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-
     try {
+      const response = await RestaurantFinder.post(`/${id}/addReview`, {
+        name: name,
+        review: review,
+        rating: rating,
+      });
+      console.log(response);
+      // refresh page to display new data
+      window.location.reload();
     } catch (err) {
       console.log(err.message);
     }
@@ -47,7 +57,7 @@ const AddReview = () => {
             <textarea
               className="form-control"
               cols="30"
-              rows="10"
+              rows="5"
               value={review}
               onChange={(e) => setReview(e.target.value)}
               placeholder="Review"

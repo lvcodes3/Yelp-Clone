@@ -2,7 +2,12 @@ import StarRating from "./StarRating";
 
 const Reviews = ({ reviews }) => {
   return (
-    <div className="row row-cols-3 mb-2">
+    <div
+      className="row row-cols-3 mb-2"
+      style={
+        reviews.length === 0 ? {} : { height: "260px", overflowY: "scroll" }
+      }
+    >
       {reviews.map((review) => {
         return (
           <div

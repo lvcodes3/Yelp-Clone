@@ -8,12 +8,12 @@ const queries = require("./queries");
 const getAllRestaurants = async (req, res) => {
   console.log("Attempting to retrieve all restaurants");
   try {
-    const restaurants = await db.query(queries.getAllRestaurants);
+    const restaurantsRatingsData = await db.query(queries.getRestaurantsData);
     res.status(200).json({
       status: "success",
-      results: restaurants.rows.length,
+      results: restaurantsRatingsData.rows.length,
       data: {
-        restaurants: restaurants.rows,
+        restaurants: restaurantsRatingsData.rows,
       },
     });
   } catch (err) {
@@ -27,7 +27,7 @@ const getRestaurant = async (req, res) => {
   try {
     const id = req.params.id;
     // get restaurant by id
-    const restaurant = await db.query(queries.getRestaurant, [id]);
+    const restaurant = await db.query(queries.getRestaurantData, [id]);
     // get reviews for the restaurant
     const reviews = await db.query(queries.getReviews, [id]);
     // send back data
@@ -107,12 +107,40 @@ const deleteRestaurant = async (req, res) => {
   }
 };
 
+// 6. add review to a restaurant
+const addReview = async (req, res) => {
+  console.log(
+    `Attempting to add a review to restaurant id: ${
+      req.params.id
+    } and review data: ${JSON.stringify(req.body)}`
+  );
+  try {
+    const id = req.params.id;
+    const { name, review, rating } = req.body;
+    const newReview = await db.query(queries.addReview, [
+      id,
+      name,
+      review,
+      rating,
+    ]);
+    res.status(201).json({
+      status: "success",
+      data: {
+        review: newReview.rows[0],
+      },
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 module.exports = {
   getAllRestaurants,
   getRestaurant,
   addRestaurant,
   updateRestaurant,
   deleteRestaurant,
+  addReview,
 };
 
 /*
