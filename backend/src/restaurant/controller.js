@@ -4,9 +4,8 @@
 const db = require("../../db");
 const queries = require("./queries");
 
-// 1. get all restaurants
+// 1. get all restaurants in the db
 const getAllRestaurants = async (req, res) => {
-  console.log("Attempting to retrieve all restaurants");
   try {
     const restaurantsRatingsData = await db.query(queries.getRestaurantsData);
     res.status(200).json({
@@ -23,7 +22,6 @@ const getAllRestaurants = async (req, res) => {
 
 // 2. get a restaurant
 const getRestaurant = async (req, res) => {
-  console.log(`Attempting to retrieve restaurant with id: ${req.params.id}`);
   try {
     const id = req.params.id;
     // get restaurant by id
@@ -45,11 +43,6 @@ const getRestaurant = async (req, res) => {
 
 // 3. add a restaurant
 const addRestaurant = async (req, res) => {
-  console.log(
-    `Attempting to insert restaurant with JSON data: ${JSON.stringify(
-      req.body
-    )}`
-  );
   try {
     const { name, location, price_range } = req.body;
     const restaurant = await db.query(queries.addRestaurant, [
@@ -70,11 +63,6 @@ const addRestaurant = async (req, res) => {
 
 // 4. update a restaurant
 const updateRestaurant = async (req, res) => {
-  console.log(
-    `Attempting to update restaurant of id: ${
-      req.params.id
-    } with JSON data: ${JSON.stringify(req.body)}`
-  );
   try {
     const id = req.params.id;
     const { name, location, price_range } = req.body;
@@ -97,7 +85,6 @@ const updateRestaurant = async (req, res) => {
 
 // 5. delete a restaurant
 const deleteRestaurant = async (req, res) => {
-  console.log(`Attempting to delete restaurant with id: ${req.params.id}`);
   try {
     const id = req.params.id;
     const response = await db.query(queries.deleteRestaurant, [id]);
@@ -109,11 +96,6 @@ const deleteRestaurant = async (req, res) => {
 
 // 6. add review to a restaurant
 const addReview = async (req, res) => {
-  console.log(
-    `Attempting to add a review to restaurant id: ${
-      req.params.id
-    } and review data: ${JSON.stringify(req.body)}`
-  );
   try {
     const id = req.params.id;
     const { name, review, rating } = req.body;
