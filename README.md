@@ -1,8 +1,14 @@
 # Yelp Clone
 
-A Full-stack Web Application that acts as Yelp. We give users the functionality to add many restaurants
-into the list of stored restaurants. We also allow users to add and display the reviews on a selected
-restaurant. Made possible by the PERN stack (Postgres, Express, React, Node).
+A Full-Stack Web Application that behaves similar to Yelp. <br>
+We give users the following functionalities: <br>
+
+1. Add many restaurants into the list of restaurants. <br>
+2. Update or delete restaurants that exist in the list of restaurants. <br>
+3. View a restaurant in more detail. <br>
+4. Add reviews on a selected restaurant. <br>
+5. Accurate average rating calculation display for each restaurant. <br>
+   Made possible by the PERN stack (Postgres, Express, React, Node). <br>
 
 ## BACKEND
 
@@ -37,6 +43,8 @@ In order to setup the backend you must first:
 
 The frontend is where we utilize React to create a client-side display using React components and overall
 functionality.
+We used Bootstrap 4 to style many of the html elements present in the web application.
+We used CSS Font Awesome for styling purposes as well.
 
 The following npm dependencies are used:
 "@testing-library/jest-dom": "^5.16.5",
