@@ -9,7 +9,8 @@ We give users the following functionalities: <br>
 3. View a restaurant in more detail. <br>
 4. Add reviews on a selected restaurant. <br>
 5. Accurate average rating calculation display for each restaurant. <br>
-   Made possible by the PERN stack (Postgres, Express, React, Node). <br>
+
+Made possible by the PERN stack (Postgres, Express, React, Node). <br>
 
 ## BACKEND
 
