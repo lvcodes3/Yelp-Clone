@@ -6,7 +6,7 @@ const app = express();
 require("dotenv").config();
 
 // set the backend port number
-const port = process.env.PORT || 5001;
+const port = process.env.PORT;
 
 // middlewares //
 const cors = require("cors"); // allow communication between frontend and backend
